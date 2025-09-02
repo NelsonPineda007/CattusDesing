@@ -1,3 +1,84 @@
-* {
-    font-family: 'Fredoka', sans-serif;
+/* RESET + tipografía */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;width:100%;overflow-x:hidden;font-family:'Fredoka',sans-serif}
+
+/* Sección pegada a los bordes de la pantalla */
+.hero-section{
+  width:100vw;
+  min-height:100vh;
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  padding:0;           /* sin márgenes: ocupa todo el contorno */
 }
+
+/* GRID estable (no “salta” al hacer zoom) */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr); /* como tu referencia */
+  gap:0;                                /* sin gutters para pegar a los bordes */
+  width:100%;
+}
+
+/* Responsive simple */
+@media (max-width: 1024px){
+  .card-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width: 560px){
+  .card-grid{grid-template-columns:1fr}
+}
+
+/* Cada tarjeta tiene altura con aspect-ratio (clave para que se vea) */
+.card{
+  position:relative;
+  aspect-ratio: 3 / 4;      /* alto vertical tipo catálogo */
+  overflow:hidden;
+}
+
+/* Imagen de fondo */
+.card__bg{
+  position:absolute; inset:0;
+  background-size:cover;
+  background-position:center;
+  transform:scale(1);
+  transition:transform .35s ease, filter .25s ease;
+  filter:brightness(.92) contrast(.98);
+}
+
+/* Overlay suave para legibilidad (minimalista) */
+.card::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.35), rgba(0,0,0,0) 55%);
+  pointer-events:none;
+}
+
+/* Hover discreto */
+.card:hover .card__bg{ transform:scale(1.05); filter:brightness(.82) }
+
+/* Contenido */
+.card__content{
+  position:absolute;
+  left:clamp(12px,2vw,24px);
+  bottom:clamp(12px,2vw,24px);
+  color:#fff;
+  z-index:1;
+}
+
+.card__heading{
+  font-size:clamp(18px,2.2vw,28px);
+  font-weight:600;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  text-shadow:0 2px 18px rgba(0,0,0,.45);
+  margin-bottom:4px;
+}
+
+.card__category{
+  font-size:clamp(12px,1.2vw,15px);
+  opacity:.95;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+
+/* Suavidad general al hacer zoom/resize */
+html{scroll-behavior:smooth}
