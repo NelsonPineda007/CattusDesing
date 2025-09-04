@@ -1,26 +1,22 @@
-/* RESET + tipografía */
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;width:100%;overflow-x:hidden;font-family:'Fredoka',sans-serif}
 
-/* Sección pegada a los bordes de la pantalla */
 .hero-section{
   width:100vw;
-  min-height:100vh;
+  min-height:50vh;
   display:flex;
   align-items:stretch;
   justify-content:center;
-  padding:0;           /* sin márgenes: ocupa todo el contorno */
+  padding:0;           
 }
 
-/* GRID estable (no “salta” al hacer zoom) */
 .card-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr); /* como tu referencia */
-  gap:0;                                /* sin gutters para pegar a los bordes */
+  grid-template-columns:repeat(4,1fr); 
+  gap:0;                                
   width:100%;
 }
 
-/* Responsive simple */
 @media (max-width: 1024px){
   .card-grid{grid-template-columns:repeat(2,1fr)}
 }
@@ -28,14 +24,12 @@ html,body{height:100%;width:100%;overflow-x:hidden;font-family:'Fredoka',sans-se
   .card-grid{grid-template-columns:1fr}
 }
 
-/* Cada tarjeta tiene altura con aspect-ratio (clave para que se vea) */
 .card{
   position:relative;
-  aspect-ratio: 3 / 4;      /* alto vertical tipo catálogo */
+  aspect-ratio: 3 / 4;      
   overflow:hidden;
 }
 
-/* Imagen de fondo */
 .card__bg{
   position:absolute; inset:0;
   background-size:cover;
@@ -45,7 +39,6 @@ html,body{height:100%;width:100%;overflow-x:hidden;font-family:'Fredoka',sans-se
   filter:brightness(.92) contrast(.98);
 }
 
-/* Overlay suave para legibilidad (minimalista) */
 .card::after{
   content:"";
   position:absolute; inset:0;
@@ -53,10 +46,8 @@ html,body{height:100%;width:100%;overflow-x:hidden;font-family:'Fredoka',sans-se
   pointer-events:none;
 }
 
-/* Hover discreto */
 .card:hover .card__bg{ transform:scale(1.05); filter:brightness(.82) }
 
-/* Contenido */
 .card__content{
   position:absolute;
   left:clamp(12px,2vw,24px);
@@ -80,5 +71,154 @@ html,body{height:100%;width:100%;overflow-x:hidden;font-family:'Fredoka',sans-se
   text-shadow:0 2px 12px rgba(0,0,0,.4);
 }
 
-/* Suavidad general al hacer zoom/resize */
 html{scroll-behavior:smooth}
+
+.carousel {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.carousel-item {
+  --items: 10;
+  --width: clamp(150px, 30vw,  300px);
+  --height: clamp(200px, 40vw,  400px);
+  --x: calc(var(--active) * 800%);
+  --y: calc(var(--active) * 200%);
+  --rot: calc(var(--active) * 120deg);
+  --opacity: calc(var(--zIndex) / var(--items) * 3 - 2);
+  overflow: hidden;
+  position: absolute;
+  z-index: var(--zIndex);
+  width: var(--width);
+  height: var(--height);
+  margin: calc(var(--height) * -0.5) 0 0 calc(var(--width) * -0.5);
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  user-select: none;
+  transform-origin: 0% 100%;
+  box-shadow: 0 10px 50px 10px rgba(0, 0, 0, .5);
+  background: black;
+  pointer-events: all;
+  transform:  translate(var(--x), var(--y)) rotate(var(--rot)) ;
+  transition: transform .8s cubic-bezier(0, 0.02, 0, 1);
+
+  .carousel-box {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity .8s cubic-bezier(0, 0.02, 0, 1);
+    opacity: var(--opacity);
+    font-family: 'Orelo-sw-db', serif;
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, .5));
+    }
+  }
+
+  .title {
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    bottom: 20px;
+    left: 20px;
+    transition: opacity .8s cubic-bezier(0, 0.02, 0, 1);
+    font-size: clamp(20px, 3vw, 30px);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, .1);
+  }
+
+  .num {
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    top: 10px;
+    left: 20px;
+    transition: opacity .8s cubic-bezier(0, 0.02, 0, 1);
+    font-size: clamp(20px, 10vw, 80px);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+}
+
+.layout {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  &:before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 90px;
+    width: 10px;
+    height: 100%;
+    border: 1px solid #fff;
+    border-top: none;
+    border-bottom: none;
+    opacity: .15;
+  }
+
+  .box {
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    color: #fff;
+    transform-origin: 0% 10%;
+    transform: rotate(-90deg);
+    font-size: 9px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    opacity: .4;
+  }
+}
+
+
+.cursor {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  --size: 40px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .2);
+  margin: calc(var(--size) * -0.5) 0 0 calc(var(--size) * -0.5);
+  transition: transform .85s cubic-bezier(0, 0.02, 0, 1);
+  display: none;
+  pointer-events: none;
+  
+  @media (pointer: fine) {
+    display: block;
+  }
+}
+
+.cursor2 {
+  --size: 2px;
+  transition-duration: .7s;
+}
+
+
